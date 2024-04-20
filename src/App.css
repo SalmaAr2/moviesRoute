@@ -1,0 +1,37 @@
+h1 {
+    text-align: center;
+    color: #f42f0c;
+  }
+  
+  .movie-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .movie-card {
+    flex: 1 0 calc(33.33% - 20px); /*this will make each card take up one-third of the container width with 20px space in between*/
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 250px; /*set a minimum width for each card*/
+  }
+  
+  .movie-card h5 {
+    margin-bottom: 10px;
+  }
+  
+  .movie-card p {
+    margin-bottom: 15px;
+   
+  }
+  
+  .movie-card .btn {
+     margin-top: auto; /* align the button to the bottom of the card */
+    background-color: #ff0808;
+    
+  }
+  
+  .movie-card .btn:hover {
+    border-color: #ff0000;
+  }
+

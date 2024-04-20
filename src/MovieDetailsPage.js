@@ -1,37 +1,39 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-const MovieDetailsPage = ({ movies }) => {
+const MovieDetailsPage = ({ movies }) => { //at first we define the MovieDetailsPage's component
 
 
-// Nous utilisons ici { id } pour prendre la valeur du paramètre id de l'URL, cela nous aide à identifier les détails du film à afficher en fonction de l'ID dans l'URL.
-// Le hook useParams() nous aide à accéder aux paramètres dans l'URL.
-// Dans cet exemple, si notre URL est "/movie/123", id contiendra la valeur "123".
-// Ainsi, nous pouvons identifier les détails du film à afficher en fonction de l'ID dans l'URL.
+//we are here using { id } to take the value of the id parameter from the URL, it helps us identify which movie details to display based on the ID in the URL
+//the useParams() hook helps us access parameters in the URL
+//for this exemple, if our URL is "/movie/123", id will contain the value "123"
+//so we can identify which movie details to display based on the ID in the URL
   const { id } = useParams();
 
-// La partie movie.find lance une opération de recherche à l'intérieur du tableau movies.
-// Nous utilisons parseInt(id) pour convertir l'ID extrait de l'URL, qui est initialement une chaîne de caractères, en un entier.
-// Donc, l'ensemble de la condition : movie.id === parseInt(id) : cette condition vérifie si la propriété id de l'objet film actuel est égale à la valeur id extraite de l'URL.
+//the movie.find part starts a search operation inside the movies array
+//we use the parseInt(id) to convert the id extracted from the URL, which is initially a string, into an integer
+//(it is very necessary because movie.id is typically stored as a number, and we want to ensure that we're comparing two values of the same data type (both integers) when searching for the corresponding movie in the movies array)
+//so the whole thing: movie.id === parseInt(id): this condition checks if the id property of the current movie object is equal to the id value extracted from the URL
   const movie = movies.find(movie => movie.id === parseInt(id));
 
 
 
-//La partie suivante signifie que si aucun détail n'est disponible pour le film, nous affichons un message indiquant "Film non trouvé 
+//the following part means, if there's no details available for the movie, we display a message saying "Movie nit found!"
   if (!movie) {
     return <div>Movie not found!</div>;
   }
 
 
 
- //nous rendons les détails du film sélectionné, y compris son titre, sa description et sa note. De plus, nous fournissons un lien étiqueté "Précédent" pour naviguer vers la page d'accueil.
+ //here we are rendering the details of the selected movie, including its title, description, and rating, in addiction we provide a link tagged with "Previous" to navigate back to the home page
   return (
     <div>
-        {/*displaying the movie title*/}
-      <h2>{movie.name}</h2>
-      <p>{movie.description}</p>
-      <p>Genre: {movie.genre}</p>
-        {/* link to navigate back to the home page*/}
+  
+      <h2 style={{color: 'white'}}>{movie.name}</h2>
+
+      <p style={{color: 'white'}}>{movie.description}</p>
+      <p style={{color: 'white'}}>Rating: {movie.rating}</p>
+        
       <Link to="/" className="btn btn-primary">Previous</Link>
       <div>
       <iframe width="560" height="315" src={movie.trailer} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> 

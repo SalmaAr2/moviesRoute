@@ -12,6 +12,7 @@ const MovieCard = ({ movie }) => {
         <p className="card-text">Rating: {movie.rating}</p>
         {/* Button to navigate to movie description */}
         <Link to={`/movie/${movie.id}`} className="btn btn-primary mr-2">See Description</Link>
+        
         {/* Button pr ouvrir trailer dans une nvl page */}
         <a href={movie.trailer} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Watch Trailer</a>
       </div>

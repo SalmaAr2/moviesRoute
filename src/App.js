@@ -7,11 +7,12 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieDetailsPage from "./MovieDetailsPage";
 import MovieCard from "./MovieCard";
+import "./App.css";
 
 const App =()=> {
   const moviesData = Movies(); // movie data from Movies component
-  const [movies, setMovies] = useState(Movies); // State pour stocker la liste de films
-  const [filteredMovies, setFilteredMovies] = useState(movies); // State pour stocker les films filtrés
+  const [movies, setMovies] = useState( moviesData); // State pour stocker la liste de films
+  const [filteredMovies, setFilteredMovies] = useState( moviesData); // State pour stocker les films filtrés
   const [showForm, setShowForm] = useState(false); // State pour contrôler l'affichage du formulaire
   const [formData, setFormData] = useState({ // State pour stocker les données du formulaire tant que l'ID, le nom, la description, la note, l'image et le genre
     id: movies.length + 1,
@@ -19,7 +20,8 @@ const App =()=> {
     description: '',
     rating: '',
     imageURL: '',
-    genre: ''
+    genre: '',
+    poster: null,
   });
 
   //Gestion des changements dans les champs du formulaire en mettant à jour les données par défaut avec les nouvelles valeurs entrées par le user
@@ -60,7 +62,7 @@ const App =()=> {
       rating: "",
       trailer: "",
       genre: "",
-      image: null,
+      poster: null,
     });
     setShowForm(false);
   };
@@ -86,63 +88,88 @@ const App =()=> {
         rating: "",
         trailer: "",
         genre: "",
-        image: null,
+        poster: null,
       });
     }
     setShowForm(!showForm);
   };
 
   return (
-    <Router>
-<>
-    
     <section style={{ //background
-          backgroundImage: `url(${bg})`,
-          position: "relative",
-          backgroundPosition: "center",
-          overflow: "hidden",
-        }}>
-         <Container className='my-5'>
-
-        
-         <h1 className='text-capitalize text-center fw-bold' style={{color: '#FF0303'}}>You Favourite Movies</h1>
-         <button onClick={toggleForm}>
+      backgroundImage: `url(${bg})`,
+      position: "relative",
+      backgroundPosition: "center",
+      overflow: "hidden",
+    }}>
+    <Container className='my-5'>
+    <Router>
+      <div className="container mt-4">
+      <h1 className='text-capitalize text-center fw-bold' style={{color: '#FF0303'}}>You Favourite Movies</h1>
+        <button onClick={toggleForm}>
           {showForm ? "Close Form" : "Add New Movie"}
         </button>
-      {/* Affichage du formulaire avec une opacité réduite en arrière-plan */}
-      {showForm && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 1 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            <div style={{ maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', backgroundColor: '#fff' }}>
-              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleInputChange} style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }} required />
-              <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleInputChange} style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }} required />
-              <input type="text" name="rating" placeholder="Rating" value={formData.rating} onChange={handleInputChange} style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }} required />
-              <label for="fileUpload"></label>
-              <input type="file" name="imageURL" placeholder="Image " value={formData.imageURL} onChange={handleInputChange} style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }} required />
-              <input type="text" name="genre" placeholder="Genre" value={formData.genre} onChange={handleInputChange} style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }} required />
-              <button style={{ backgroundColor: '#f1948a', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }} onClick={addMovie}>Add Movie</button>
-            </div>
+        {showForm && (
+          <div >
+            <input
+              style={{marginBottom: "10px", padding :"10"}}
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
+            <input
+              
+              type="text"
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+            <input
+             
+              type="text"
+              name="rating"
+              placeholder="Rating"
+              value={formData.rating}
+              onChange={handleInputChange}
+            />
+            <input
+              
+              type="text"
+              name="trailer"
+              placeholder="Trailer URL"
+              value={formData.trailer}
+              onChange={handleInputChange}
+            />
+            <input
+              
+              type="text"
+              name="genre"
+              placeholder="Genre"
+              value={formData.genre}
+              onChange={handleInputChange}
+            />
+            <input
+              
+              type="file"
+              name="image"
+              onChange={handleInputChange}
+            />{" "}
+            {/*this file input is for image upload */}
+            <button  onClick={addMovie}>
+              Submit
+            </button>
           </div>
-        </div>
-      )}
-      
-       {!showForm && (
-        <button style={{ backgroundColor: '#d98880', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '20px'  }} onClick={() => setShowForm(true)}>Add Movie</button>
-      )} 
-      <Filter onFilterChange={handleFilterChange} />
-      <MovieList movies={filteredMovies} />
-      
-         </Container>
-
-         </section>
-
-     
-       
-         <Routes>
-          {/*'exact' garantit que le chemin doit correspondre exactement.
-'path' spécifie le chemin de l'URL ("/").
-'element' rend une <div> avec des cartes de films.
-*/}
+        )}
+        
+        <Filter onFilterChange={handleFilterChange} /> {/* filter component */}
+        
+        <Routes>
+          {/* The next code sets up a route for the root URL ("/") of the app
+          the 'exact' ensures the path must match exactly
+          the 'path' specifies the URL path ("/")
+          the 'element' renders a <div> with movie cards*/}
           <Route
             exact
             path="/"
@@ -151,25 +178,25 @@ const App =()=> {
                 {filteredMovies.map((movie) => (
                   <div className="movie-card" key={movie.id}>
                     <MovieCard movie={movie} />{" "}
-                    {/* Affichez la carte de film pour chaque film dans la liste. */}
+                    {/* display the movie card for each movie in the list */}
                   </div>
                 ))}
               </div>
             }
           />
-          {/*Une route créée pour afficher la description de chaque film.
-La partie "element" spécifie que une fois que la route est trouvée, elle rendra le composant MovieDetailsPage, en transmettant moviesData en tant que prop*/}
+          {/*a route made to reveal the descrption of each movie
+          the element part specifies that once the route is matched, it will render the MovieDetailsPage component, passing in the moviesData as a prop*/}
           <Route
             path="/movie/:id"
             element={<MovieDetailsPage movies={filteredMovies} />}
           />
         </Routes>
-    </>
+      </div>
     </Router>
-    
-
+    </Container>
+    </section>
   );
-}
+};
 
 
 export default App;
